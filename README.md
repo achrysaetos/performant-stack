@@ -1,6 +1,6 @@
 # Performant Stack
 
-Optimized for DX and UX.
+Optimized for DX, UX, and scale.
 
 **Backend:**
 * Flask or FastAPI
