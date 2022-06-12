@@ -1,12 +1,17 @@
 import { Box } from '@chakra-ui/react'
-import { useState } from 'react'
+import useSWR from 'swr'
+
+const fetcher = (url: RequestInfo | URL) => fetch(url).then(res => res.json())
 
 export default function App() {
-  const [count, setCount] = useState(0)
+  const { data, error } = useSWR('http://localhost:8000/users', fetcher)
+
+  if (error) return <div>failed to load</div>
+  if (!data) return <div>loading...</div>
 
   return (
     <>
-      <Box>Hello World!</Box>
+      <Box>Hello {data[3].email}!</Box>
     </>
   )
 }
