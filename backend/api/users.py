@@ -18,13 +18,6 @@ from api.utils.courses import get_user_courses
 router = fastapi.APIRouter()
 
 
-# Read all users.
-@router.get("/users", response_model=List[User])
-async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = get_users(db, skip=skip, limit=limit)
-    return users
-
-
 # Create a user.
 @router.post("/users", response_model=User, status_code=201)
 async def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
@@ -41,6 +34,30 @@ async def read_user(user_id: int, db: Session = Depends(get_db)):
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
+
+
+# # Update a user.
+# @router.patch("/users/{user_id}")
+# async def update_user():
+#     return
+
+
+# Delete a user.
+@router.delete("/users/{user_id}")
+async def delete_user(user_id: int, db: Session = Depends(get_db)):
+    db_user = get_user(db=db, user_id=user_id)
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    db.delete(db_user)
+    db.commit()
+    return {"ok": True}
+
+
+# Read all users.
+@router.get("/users", response_model=List[User])
+async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    users = get_users(db, skip=skip, limit=limit)
+    return users
 
 
 # Read a user's courses.
