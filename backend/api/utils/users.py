@@ -23,7 +23,7 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 # Function to create a user.
 def create_user(db: Session, user: UserCreate):
-    db_user = User(email=user.email, role=user.role)
+    db_user = User(email=user.email, username=user.username, password=user.password)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)

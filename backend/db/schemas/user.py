@@ -8,7 +8,8 @@ from pydantic import BaseModel
 # Shared fields from creating/reading the user.
 class UserBase(BaseModel):
     email: str
-    role: int
+    username: str
+    password: str
 
 
 # Pydantic model (schema) to create the user.
