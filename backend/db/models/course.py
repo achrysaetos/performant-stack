@@ -45,27 +45,8 @@ class Section(Timestamp, Base):
     description = Column(Text, nullable=True)
     course_id = Column(Integer, ForeignKey("courses.id"), nullable=False)
 
-    # Link Section to Course.sections and ContentBlock.section
+    # Link Section to Course.sections
     course = relationship("Course", back_populates="sections")
-    content_blocks = relationship("ContentBlock", back_populates="section")
-
-
-# Model for each content block.
-class ContentBlock(Timestamp, Base):
-    __tablename__ = "content_blocks"
-
-    # List the fields for each ContentBlock.
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(200), nullable=False)
-    description = Column(Text, nullable=True)
-    type = Column(Enum(ContentType))
-    url = Column(URLType, nullable=True)
-    content = Column(Text, nullable=True)
-    section_id = Column(Integer, ForeignKey("sections.id"), nullable=False)
-
-    # Link ContentBlock to Section.content_blocks and CompletedContentBlock.content_block
-    section = relationship("Section", back_populates="content_blocks")
-    completed_content_blocks = relationship("CompletedContentBlock", back_populates="content_block")
 
 
 # Model to show which courses a student is assigned to.
@@ -81,20 +62,3 @@ class StudentCourse(Timestamp, Base):
     # Link StudentCourse to User.student_courses and Course.student_courses
     student = relationship(User, back_populates="student_courses")
     course = relationship("Course", back_populates="student_courses")
-
-
-# Model to show when a student has completed a content block.
-class CompletedContentBlock(Timestamp, Base):
-    __tablename__ = "completed_content_blocks"
-
-    # List the fields for each CompletedContentBlock.
-    id = Column(Integer, primary_key=True, index=True)
-    student_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    content_block_id = Column(Integer, ForeignKey("content_blocks.id"), nullable=False)
-    url = Column(URLType, nullable=True)
-    feedback = Column(Text, nullable=True)
-    grade = Column(Integer, default=0)
-
-    # Link CompletedContentBlock to User.student_content_blocks and ContentBlock.completed_content_blocks
-    student = relationship(User, back_populates="student_content_blocks")
-    content_block = relationship(ContentBlock, back_populates="completed_content_blocks")

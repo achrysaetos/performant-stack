@@ -18,12 +18,9 @@ class User(Timestamp, Base):
     password = Column(String(100), nullable=False)
     is_active = Column(Boolean, default=False)
 
-    # Point the relationship to Profile.owner
+    # Point the relationship to Profile.owner and StudentCourse.student
     profile = relationship("Profile", back_populates="owner", uselist=False)
-
-    # Must always create a two-way relationship between different models.
     student_courses = relationship("StudentCourse", back_populates="student")
-    student_content_blocks = relationship("CompletedContentBlock", back_populates="student")
 
 
 # Model for each profile.

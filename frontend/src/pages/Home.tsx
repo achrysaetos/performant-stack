@@ -22,8 +22,9 @@ export default function App() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: "new user 8",
-        role: 2,
+        email: "aa@aa.com",
+        username: "new_user",
+        password: "password"
       }),
     });
     const json = await res.json();
@@ -31,13 +32,13 @@ export default function App() {
   }
 
   async function deleteUser() {
-    const res = await fetch("http://localhost:8000/users/22", {
+    const res = await fetch("http://localhost:8000/users/28", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        id: 22,
+        id: 28,
       }),
     });
     const json = await res.json();
@@ -47,7 +48,7 @@ export default function App() {
   return (
     <>
       {data.map((user: any) => (
-        <Box>Email: {user.email}, Role: {user.role}, Id: {user.id}</Box>
+        <Box>Email: {user.email}, Username: {user.username}, Password: {user.password}, Id: {user.id}</Box>
       ))}
       <Button onClick={createUser}>Create a new user</Button>
       <Button onClick={deleteUser}>Delete a user</Button>
